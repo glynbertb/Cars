@@ -21,6 +21,8 @@ export default function Viewer({ item, rect, thumb, onClose }) {
   }, []);
 
   useEffect(() => {
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     const el = mount.current;
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -82,16 +84,21 @@ export default function Viewer({ item, rect, thumb, onClose }) {
     };
 
     const ro = new ResizeObserver(resize); ro.observe(el); resize();
+    addEventListener("resize", resize);
+    addEventListener("orientationchange", resize);
     renderer.setAnimationLoop(() => { ctl.update(); renderer.render(scene, cam); });
 
     return () => {
       renderer.setAnimationLoop(null); ro.disconnect(); ctl.dispose(); renderer.dispose();
+      removeEventListener("resize", resize);
+      removeEventListener("orientationchange", resize);
+      document.body.style.overflow = prevOverflow;
       el.removeChild(renderer.domElement);
     };
   }, [item]);
 
   const style = open
-    ? { left: 0, top: 0, width: "100vw", height: "100svh", borderRadius: 0 }
+    ? { left: 0, top: 0, right: 0, bottom: 0, width: "100dvw", height: "100dvh", borderRadius: 0 }
     : { left: rect.left, top: rect.top, width: rect.width, height: rect.height, borderRadius: 14 };
 
   return (
