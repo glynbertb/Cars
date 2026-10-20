@@ -117,11 +117,11 @@ export const ITEMS = [
     color: "#d62828", tint: "#a7c0dd", img: "/images/bugatti.jpg" },
   { id: "04", name: "Ducati Panigale V4 R", kind: "bike", year: 2025, cat: "Superbike", score: 9.2,
     color: "#1f5eff", tint: "#9bb7d8", img: "/images/ducati.jpg" },
-    { id: "05", name: "Apex", kind: "car", h: 0.75, year: 2025, cat: "Hypercar", score: 9.4,
-    color: "#d62828", tint: "#a7c0dd", img: "/images/dodge.jpg" },
+    { id: "05", name: "Aprilia RSV4 Factory", kind: "bike", year: 2025, cat: "Superbike", score: 9.3,
+    color: "#1f5eff", tint: "#9bb7d8", img: "/images/aprilia.jpg" },
   { id: "06", name: "Yamaha YZF-R1M", kind: "bike", year: 2025, cat: "Superbike", score: 9.2,
     color: "#1f5eff", tint: "#9bb7d8", img: "/images/yamaha.jpg" , model: "/models/yamaha.glb"}, 
-     { id: "07", name: "Porsche 911 GT3 RS (992)", kind: "bike", year: 2025, cat: "Hypercar", score: 9.2,
-    color: "#1f5eff", tint: "#9bb7d8", img: "/images/porche.jpg" , model: "/models/porche.glb"}, 
+     { id: "07", name: "Porsche 911 GT3 RS (992)", kind: "car", h: 0.75, year: 2025, cat: "Hypercar", score: 9.2,
+    color: "#d62828", tint: "#a7c0dd", img: "/images/porche.jpg" , model: "/models/porche.glb"},
   // ...same for the rest
 ];

@@ -91,7 +91,7 @@ export default function Viewer({ item, rect, thumb, onClose }) {
   }, [item]);
 
   const style = open
-    ? { left: 0, top: 0, width: "100vw", height: "100vh", borderRadius: 0 }
+    ? { left: 0, top: 0, width: "100vw", height: "100svh", borderRadius: 0 }
     : { left: rect.left, top: rect.top, width: rect.width, height: rect.height, borderRadius: 14 };
 
   return (
