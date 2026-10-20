@@ -1,0 +1,9 @@
+export const GARAGE = [
+  { id: "tourbillon", name: "Bugatti Tourbillon", year: 2026, hp: 1800, tags: ["Hybrid", "V16", "AWD"], kind: "car", cat: "Hypercar", origin: "Molsheim, FR", engine: "8.3L V16", engineSub: "Hybrid, three e-motors", speed: 445, zero: 2.0, kg: 1995, color: "#c8ccd4" },
+  { id: "nevera", name: "Rimac Nevera", year: 2024, hp: 1914, tags: ["Electric", "Quad-motor"], kind: "car", cat: "Hyper-EV", origin: "Zagreb, HR", engine: "Quad motor", engineSub: "120 kWh battery", speed: 412, zero: 1.74, kg: 2150, color: "#18b8c8" },
+  { id: "jesko", name: "Koenigsegg Jesko", year: 2024, hp: 1600, tags: ["Twin-turbo", "Track"], kind: "car", cat: "Hypercar", origin: "Ängelholm, SE", engine: "5.0L V8", engineSub: "Twin-turbo, flat-plane", speed: 480, zero: 2.5, kg: 1420, color: "#e8edf5" },
+  { id: "utopia", name: "Pagani Utopia", year: 2024, hp: 864, tags: ["V12", "Manual"], kind: "car", cat: "Hypercar", origin: "San Cesario, IT", engine: "6.0L V12", engineSub: "Twin-turbo", speed: 350, zero: 2.8, kg: 1280, color: "#b3122b" },
+  { id: "gt3rs", name: "Porsche 911 GT3 RS", year: 2024, hp: 518, tags: ["NA", "DRS", "RWD"], kind: "car", cat: "Track car", origin: "Stuttgart, DE", engine: "4.0L flat-six", engineSub: "Naturally aspirated", speed: 296, zero: 3.2, kg: 1450, color: "#f2f2f2" },
+  { id: "panigale", name: "Ducati Panigale V4 R", year: 2025, hp: 218, tags: ["V4", "Winglets"], kind: "bike", cat: "Superbike", origin: "Bologna, IT", engine: "998cc V4", engineSub: "Desmosedici Stradale R", speed: 305, zero: 2.6, kg: 186, color: "#d62828" },
+  { id: "m1000rr", name: "BMW M 1000 RR", year: 2025, hp: 212, tags: ["Inline-4", "ShiftCam"], kind: "bike", cat: "Superbike", origin: "Berlin, DE", engine: "999cc inline-4", engineSub: "ShiftCam", speed: 306, zero: 3.1, kg: 192, color: "#1f5eff" },
+];
