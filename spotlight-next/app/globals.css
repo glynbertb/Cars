@@ -385,6 +385,173 @@ body,h1,.logo,.links a,.count,.info h2,.info p b{color:#fff}
 .srdet dd{min-width:0;overflow-wrap:anywhere}
 @media(max-width:480px){
   .foot{grid-template-columns:1fr;gap:10px;justify-items:center;text-align:center}
+} /* close max-width:480px — viewer styles below are global */
+
+/* ================= Vehicle 3D viewer ================= */
+.vv-sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.vv{position:fixed;inset:0;z-index:120;height:100vh;height:100dvh;overflow:hidden;color:#fff;
+  font-family:var(--sans),system-ui,sans-serif;animation:vv-in .35s ease both}
+@keyframes vv-in{from{opacity:0}to{opacity:1}}
+.vv-bg{position:absolute;inset:0;
+  background:
+    radial-gradient(120% 80% at 50% 18%, rgba(90,120,180,.16), transparent 60%),
+    repeating-linear-gradient(45deg, rgba(255,255,255,.025) 0 2px, transparent 2px 5px),
+    repeating-linear-gradient(-45deg, rgba(255,255,255,.025) 0 2px, transparent 2px 5px),
+    radial-gradient(150% 120% at 50% 115%, #0c1322 0%, #05070c 55%, #020306 100%)}
+.vv-bg:after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 180px 40px rgba(0,0,0,.75);pointer-events:none}
+.vv button{cursor:pointer}
+.vv button:focus-visible{outline:2px solid #fff;outline-offset:3px}
+
+/* Top bar */
+.vv-topbar{position:absolute;top:0;left:0;right:0;z-index:6;display:flex;align-items:center;justify-content:space-between;
+  padding:calc(18px + env(safe-area-inset-top,0px)) clamp(18px,3vw,44px) 0}
+.vv-logo{display:none;align-items:center;gap:8px;font-weight:600;font-size:15px;color:#fff;opacity:.85}
+.vv-logo i{width:18px;height:18px;border:2px solid #fff;border-radius:50%;display:grid;place-items:center}
+.vv-logo i:after{content:"";width:6px;height:6px;background:#fff;border-radius:50%}
+.vv-logo b{width:5px;height:5px;background:var(--blue);border-radius:50%}
+.vv-close{display:grid;justify-items:center;gap:4px;background:none;border:0;color:#fff;margin-left:auto}
+.vv-x{width:46px;height:46px;border-radius:50%;border:1px solid var(--line2);background:rgba(255,255,255,.1);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:17px;display:grid;place-items:center;color:#fff}
+.vv-x:hover{background:rgba(255,255,255,.22)}
+.vv-close-label{font-size:10px;letter-spacing:.22em;color:#cfd7e6}
+
+/* Stage */
+.vv-stagewrap{position:absolute;inset:0;z-index:1}
+.vv-canvas{position:absolute;inset:0}
+.vv-canvas canvas{width:100%!important;height:100%!important;display:block;cursor:grab;touch-action:none}
+.vv-poster{position:absolute;inset:-24px;width:calc(100% + 48px);height:calc(100% + 48px);object-fit:cover;
+  filter:blur(22px) brightness(.5);transform:scale(1.05)}
+.vv-loading{position:absolute;inset:0;display:grid;place-items:center;background:rgba(4,6,11,.45)}
+.vv-loading img{position:absolute;inset:-24px;width:calc(100% + 48px);height:calc(100% + 48px);object-fit:cover;
+  filter:blur(22px) brightness(.55)}
+.vv-ring{position:relative;width:104px;height:104px;display:grid;place-items:center}
+.vv-ring svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.vv-ring-track{fill:none;stroke:rgba(255,255,255,.18);stroke-width:6}
+.vv-ring-arc{fill:none;stroke:#fff;stroke-width:6;stroke-linecap:round}
+.vv-ring b{font-size:17px;font-variant-numeric:tabular-nums}
+.vv-fallback{position:absolute;inset:0;display:grid;place-content:center;gap:14px;text-align:center;background:rgba(4,6,11,.55);padding:24px}
+.vv-fallback img{width:min(560px,80vw);max-height:46vh;object-fit:cover;border-radius:16px;border:1px solid var(--line2)}
+.vv-fallback p{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:#ffd7da}
+
+/* Left glass panel: gauges + actions */
+.vv-panel{position:absolute;z-index:4;left:clamp(18px,3vw,48px);top:50%;transform:translateY(-50%);
+  width:264px;padding:20px;border-radius:20px;background:var(--glass);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line2);
+  box-shadow:0 30px 70px -30px rgba(0,0,0,.8);display:grid;gap:16px}
+.vv-gauges{display:grid;grid-template-columns:1fr 1fr;gap:14px 10px}
+.vv-gauge{position:relative;text-align:center}
+.vv-gauge svg{width:84px;height:84px}
+.vv-gauge-track{fill:none;stroke:rgba(255,255,255,.16);stroke-width:7}
+.vv-gauge-arc{fill:none;stroke-width:7;stroke-linecap:round;transform:rotate(-90deg);transform-origin:center;transform-box:fill-box}
+.vv-gauge-num{position:absolute;top:0;left:0;right:0;height:84px;display:flex;align-items:baseline;justify-content:center;gap:2px;padding-top:30px}
+.vv-gauge-num b{font-size:19px;font-variant-numeric:tabular-nums}
+.vv-gauge-num span{font-size:11px;color:var(--mut2)}
+.vv-gauge p{margin:6px 0 0;font-size:11px;color:var(--mut2)}
+.vv-actions{display:grid;gap:10px}
+.vv-btn{display:flex;align-items:center;gap:10px;width:100%;min-height:48px;padding:12px 16px;border-radius:14px;
+  background:rgba(255,255,255,.07);border:1px solid var(--line2);color:#fff;font-size:14px}
+.vv-btn:hover{background:rgba(255,255,255,.15)}
+.vv-btn.on{border-color:var(--blue)}
+.vv-heart{color:#fff;display:grid;place-items:center}
+.vv-btn.loved .vv-heart{color:var(--red)}
+
+/* Right side: presets + swatches */
+.vv-sider{position:absolute;z-index:4;right:clamp(18px,3vw,48px);top:50%;transform:translateY(-50%);
+  display:grid;gap:12px;justify-items:end}
+.vv-presets{display:flex;gap:2px;padding:5px;border-radius:14px;background:var(--glass);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line2)}
+.vv-presets button{border:0;background:none;color:#cfd7e6;font-size:12px;letter-spacing:.08em;
+  padding:10px 14px;min-height:44px;border-radius:10px}
+.vv-presets button.on{background:rgba(255,255,255,.16);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+.vv-swatches{display:flex;gap:10px;padding:10px 12px;border-radius:14px;background:var(--glass);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--line2)}
+.vv-sw{width:34px;height:34px;border-radius:50%;border:2px solid rgba(255,255,255,.35);padding:0}
+.vv-sw.on{border-color:#fff;box-shadow:0 0 0 3px rgba(255,255,255,.25)}
+
+/* Title + paging + hint */
+.vv-titleblock{position:absolute;z-index:4;left:clamp(18px,3vw,48px);bottom:calc(34px + env(safe-area-inset-bottom,0px))}
+.vv-titleblock h2{font:400 clamp(40px,5.4vw,72px)/1 var(--serif);letter-spacing:-.02em;margin:0;text-shadow:0 4px 30px rgba(0,0,0,.6)}
+.vv-titleblock h2 em{font-style:italic}
+.vv-titleblock p{margin:10px 0 0;font-size:13px;color:var(--mut2)}
+.vv-star{color:#ffd166}
+.vv-pagenav{position:absolute;z-index:4;right:clamp(18px,3vw,48px);bottom:calc(40px + env(safe-area-inset-bottom,0px));display:flex;gap:10px}
+.vv-page{width:52px;height:52px;border-radius:14px;border:1px solid var(--line2);background:var(--glass);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#fff;font-size:24px;line-height:1}
+.vv-page:hover{background:rgba(255,255,255,.18)}
+.vv-hintwrap{position:absolute;z-index:4;left:50%;transform:translateX(-50%);bottom:calc(46px + env(safe-area-inset-bottom,0px));
+  display:grid;justify-items:center;gap:8px}
+.vv-hint{margin:0;font-size:11px;letter-spacing:.2em;color:var(--mut2);white-space:nowrap}
+.vv-hand{color:#fff;opacity:.85;animation:vv-hand 1.6s ease-in-out infinite}
+@keyframes vv-hand{0%,100%{transform:translateX(-8px) rotate(-8deg)}50%{transform:translateX(8px) rotate(8deg)}}
+
+/* Toast */
+.vv-toast{position:absolute;z-index:8;left:50%;bottom:calc(110px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);
+  background:rgba(10,15,26,.9);border:1px solid var(--line2);border-radius:99px;padding:12px 22px;font-size:14px;
+  animation:vv-in .25s ease both;white-space:nowrap}
+
+/* Mobile chevrons + preset row */
+.vv-chev{position:absolute;top:42%;width:44px;height:44px;border-radius:50%;border:1px solid var(--line2);
+  background:rgba(8,12,24,.55);color:#fff;font-size:22px;z-index:5}
+.vv-chev.l{left:10px}.vv-chev.r{right:10px}
+.vv-mpresets{position:absolute;z-index:4;left:0;right:0;display:flex;justify-content:center;top:52dvh}
+.vv-mhand{position:absolute;z-index:5;left:0;right:0;top:44dvh;display:flex;justify-content:center;pointer-events:none}
+
+/* Mobile bottom sheet */
+.vv-sheet{position:absolute;z-index:6;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));
+  border-radius:22px;background:rgba(13,18,30,.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--line2);box-shadow:0 30px 70px -20px rgba(0,0,0,.85);touch-action:pan-x pan-y}
+.vv-grip{display:grid;justify-items:center;padding:10px 0 2px;cursor:grab;touch-action:none}
+.vv-gripbar{width:44px;height:5px;border-radius:99px;background:rgba(255,255,255,.3)}
+.vv-sheet-body{padding:8px 18px 14px}
+.vv-mrow{display:flex;gap:14px;align-items:center;justify-content:space-between}
+.vv-mtitle h2{font:500 30px/1.08 var(--serif);margin:0}
+.vv-mtitle h2 em{font-style:italic;font-weight:400}
+.vv-mtitle p{margin:8px 0 0;font-size:12px;color:var(--mut2)}
+.vv-mgauges{flex:none}
+.vv-mgauges .vv-gauges{gap:8px 6px}
+.vv-mgauges .vv-gauge svg{width:64px;height:64px}
+.vv-mgauges .vv-gauge-num{height:64px;padding-top:21px}
+.vv-mgauges .vv-gauge-num b{font-size:15px}
+.vv-mgauges .vv-gauge p{font-size:10px}
+.vv-mactions{margin-top:12px}
+.vv-mactions .vv-actions{grid-template-columns:1fr 1fr 1fr}
+.vv-mactions .vv-btn{justify-content:center;font-size:12px;min-height:44px;padding:10px 8px;border-radius:99px}
+.vv-sheet-extra{display:none;padding:0 18px calc(16px + env(safe-area-inset-bottom,0px));max-height:34dvh;overflow:auto}
+.vv-sheet.open .vv-sheet-extra{display:grid;gap:12px}
+.vv-desc{margin:0;font-size:13px;line-height:1.6;color:#cdd6e6}
+.vv-sheet .vv-swatches{justify-self:start}
+
+/* Layout switches */
+@media(min-width:768px){
+  .vv-logo{display:none}
+  .vv-stagewrap.m,.vv-mpresets,.vv-sheet,.vv-chev,.vv-mhand{display:none!important}
+}
+@media(max-width:767px){
+  .vv-logo{display:flex}
+  .vv-panel,.vv-sider,.vv-titleblock,.vv-pagenav,.vv-hintwrap{display:none!important}
+  .vv-stagewrap{inset:0;bottom:auto;height:56dvh}
+  .vv-close{margin-left:0}
+  .vv-close .vv-x{display:none}
+  .vv-close-label{font-size:12px;letter-spacing:.14em;border:1px solid var(--line2);background:rgba(255,255,255,.1);
+    backdrop-filter:blur(10px);border-radius:99px;padding:12px 20px;min-height:44px;display:inline-flex;align-items:center}
+  .vv-toast{bottom:auto;top:calc(70px + env(safe-area-inset-top,0px))}
+}
+/* Tablet: desktop layout, narrower left panel */
+@media(min-width:768px) and (max-width:1023px){
+  .vv-panel{width:212px;padding:14px;left:20px}
+  .vv-gauge svg{width:68px;height:68px}
+  .vv-gauge-num{height:68px;padding-top:23px}
+  .vv-gauge-num b{font-size:16px}
+  .vv-sider{right:20px}
+  .vv-titleblock{left:20px}
+  .vv-pagenav{right:20px}
+}
+@media(prefers-reduced-motion:reduce){
+  .vv,.vv-toast{animation:none}
+  .vv-hand{animation:none}
+  .vv canvas{touch-action:pan-y}
+}
+@media(max-width:480px){ /* reopen for the rules that followed the insertion point */
   .foot .count{font-size:32px}
   .cap-r{display:none}
   .cmp-row{grid-template-columns:1fr;gap:6px}

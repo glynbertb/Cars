@@ -109,19 +109,19 @@ export function renderThumb(it) {
 }
 
 export const ITEMS = [
-  { id: "01", name: "Dodge Challenger", kind: "car", h: 0.75, year: 2025, cat: "Hypercar", score: 9.4,
+  { id: "01", name: "Dodge Challenger", kind: "car", h: 0.75, year: 2023, cat: "Muscle car", score: 9.4,
     color: "#d62828", tint: "#a7c0dd", img: "/images/dodge.jpg", model: "/models/dodge.glb"},
   { id: "02", name: "BMW M 1000 RR", kind: "bike", year: 2025, cat: "Superbike", score: 9.2,
     color: "#1f5eff", tint: "#9bb7d8", img: "/images/BMW.jpg" },
-   { id: "03", name: " Bugatti Tourbillon", kind: "car", h: 0.75, year: 2025, cat: "Hypercar", score: 9.4,
+   { id: "03", name: "Bugatti Tourbillon", kind: "car", h: 0.75, year: 2026, cat: "Hypercar", score: 9.6,
     color: "#d62828", tint: "#a7c0dd", img: "/images/bugatti.jpg" },
-  { id: "04", name: "Ducati Panigale V4 R", kind: "bike", year: 2025, cat: "Superbike", score: 9.2,
+  { id: "04", name: "Ducati Panigale V4 R", kind: "bike", year: 2025, cat: "Superbike", score: 9.4,
     color: "#1f5eff", tint: "#9bb7d8", img: "/images/ducati.jpg" },
     { id: "05", name: "Aprilia RSV4 Factory", kind: "bike", year: 2025, cat: "Superbike", score: 9.3,
     color: "#1f5eff", tint: "#9bb7d8", img: "/images/aprilia.jpg" },
   { id: "06", name: "Yamaha YZF-R1M", kind: "bike", year: 2025, cat: "Superbike", score: 9.2,
     color: "#1f5eff", tint: "#9bb7d8", img: "/images/yamaha.jpg" , model: "/models/yamaha.glb"}, 
-     { id: "07", name: "Porsche 911 GT3 RS (992)", kind: "car", h: 0.75, year: 2025, cat: "Hypercar", score: 9.2,
+     { id: "07", name: "Porsche 911 GT3 RS (992)", kind: "car", h: 0.75, year: 2025, cat: "Track car", score: 9.5,
     color: "#d62828", tint: "#a7c0dd", img: "/images/porche.jpg" , model: "/models/porche.glb"},
   // ...same for the rest
 ];

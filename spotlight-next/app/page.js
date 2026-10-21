@@ -9,6 +9,7 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import Gallery, { Lightbox } from "../components/Gallery";
 import Garage, { loadGarage } from "../components/Garage";
+import { VEHICLE_BY_SLUG } from "../data/vehicles";
 import Editorial from "../components/Editorial";
 import About from "../components/About";
 import Access from "../components/Access";
@@ -32,9 +33,10 @@ function Section({ id, kicker, title, children }) {
 
 export default function Page() {
   const [thumbs, setThumbs] = useState({});
-  const [view, setView] = useState(null);
+  const [viewIdx, setViewIdx] = useState(null);
   const [lb, setLb] = useState(null);
   const [saved, setSaved] = useState({});
+  const [cmp, setCmp] = useState([]);
   const active = useActiveSection(IDS);
   useReveal();
 
@@ -53,9 +55,33 @@ export default function Page() {
     return () => { dead = true; };
   }, []);
 
-  const open3D = useCallback((item, rect) => {
+  const open3D = useCallback((item) => {
+    const i = ITEMS.findIndex((x) => x.id === item.id);
+    if (i < 0) return;
     setLb(null);
-    setView({ item, rect: rect || { left: innerWidth / 2 - 100, top: innerHeight / 2 - 130, width: 200, height: 260 } });
+    setViewIdx(i);
+  }, []);
+
+  const toggleCmp = useCallback((id) => {
+    setCmp((c) => (c.includes(id) ? c.filter((x) => x !== id) : c.length >= 3 ? c : [...c, id]));
+  }, []);
+
+  // Deep link: #machine=<slug> opens the viewer on that machine.
+  useEffect(() => {
+    const fromHash = () => {
+      const m = location.hash.match(/^#machine=([\w-]+)/);
+      if (!m) return;
+      const v = VEHICLE_BY_SLUG[m[1]];
+      if (!v) return;
+      const i = ITEMS.findIndex((x) => x.id === v.id);
+      if (i >= 0) {
+        setLb(null);
+        setViewIdx(i);
+      }
+    };
+    fromHash();
+    window.addEventListener("hashchange", fromHash);
+    return () => window.removeEventListener("hashchange", fromHash);
   }, []);
 
   const toggleSave = useCallback((it) => {
@@ -84,7 +110,7 @@ export default function Page() {
       <SearchModal />
 
       <section id="home" className="sp-home" aria-label="Spotlight hero">
-        <Hero thumbs={thumbs} />
+        <Hero thumbs={thumbs} onView3D={open3D} />
       </section>
 
       <Section id="gallery" kicker="01 · Browse the collection" title={["The", "Gallery"]}>
@@ -92,7 +118,7 @@ export default function Page() {
       </Section>
 
       <Section id="garage" kicker="02 · Your personal collection" title={["My", "Garage"]}>
-        <Garage saved={saved} onToggleSave={toggleSave} />
+        <Garage saved={saved} onToggleSave={toggleSave} cmp={cmp} onToggleCmp={toggleCmp} onView3D={open3D} />
       </Section>
 
       <Section id="editorial" kicker="03 · Stories from the fast lane" title={["The", "Editorial"]}>
@@ -115,7 +141,18 @@ export default function Page() {
           onPrev={() => stepLb(-1)} onNext={() => stepLb(1)} onView3D={open3D}
         />
       )}
-      {view && <Viewer item={view.item} rect={view.rect} thumb={thumbs[view.item.id]} onClose={() => setView(null)} />}
+      {viewIdx !== null && (
+        <Viewer
+          index={viewIdx}
+          items={ITEMS}
+          onIndexChange={setViewIdx}
+          onClose={() => setViewIdx(null)}
+          saved={saved}
+          onToggleSave={toggleSave}
+          cmp={cmp}
+          onToggleCmp={toggleCmp}
+        />
+      )}
     </main>
   );
 }

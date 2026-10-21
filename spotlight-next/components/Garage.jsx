@@ -24,7 +24,7 @@ function Bar({ label, value, max, unit, invert }) {
   );
 }
 
-function SpecCard({ it, saved, onToggleSave, onCompare, inCompare }) {
+function SpecCard({ it, saved, onToggleSave, onCompare, inCompare, onView3D }) {
   const sp = SPECS[it.id] || { hp: 0, zero: 0, speed: 0, kg: 0 };
   return (
     <article className="gcard">
@@ -39,6 +39,9 @@ function SpecCard({ it, saved, onToggleSave, onCompare, inCompare }) {
         <Bar label="0–100 km/h" value={sp.zero} max={4} unit=" s" invert />
         <Bar label="Top speed" value={sp.speed} max={445} unit=" km/h" />
         <Bar label="Weight" value={sp.kg} max={2100} unit=" kg" invert />
+        <div className="gbtns">
+          {onView3D && <button className="btn-ghost" onClick={() => onView3D(it)}>View in 3D</button>}
+        </div>
         <label className="cmp-check">
           <input type="checkbox" checked={inCompare} onChange={onCompare} aria-label={`Compare ${it.name}`} /> Compare
         </label>
@@ -130,12 +133,15 @@ function ApiSearch({ saved, onToggleSave }) {
   );
 }
 
-export default function Garage({ saved, onToggleSave }) {
-  const [cmp, setCmp] = useState([]);
+export default function Garage({ saved, onToggleSave, cmp: controlledCmp, onToggleCmp, onView3D }) {
+  const [innerCmp, setInnerCmp] = useState([]);
+  // Compare tray state is lifted to the page so the 3D viewer can share it;
+  // falls back to local state when used standalone.
+  const cmp = controlledCmp ?? innerCmp;
   const mine = useMemo(() => ITEMS.filter((i) => saved[i.id]), [saved]);
   const extra = useMemo(() => Object.entries(saved).filter(([id]) => !ITEMS.some((i) => i.id === id)).map(([id, v]) => ({ id, ...v })), [saved]);
 
-  const toggleCmp = (id) => setCmp((c) => (c.includes(id) ? c.filter((x) => x !== id) : c.length >= 3 ? c : [...c, id]));
+  const toggleCmp = onToggleCmp ?? ((id) => setInnerCmp((c) => (c.includes(id) ? c.filter((x) => x !== id) : c.length >= 3 ? c : [...c, id])));
 
   return (
     <div>
@@ -148,7 +154,7 @@ export default function Garage({ saved, onToggleSave }) {
         <>
           <div className="grid-cards">
             {mine.map((it) => (
-              <SpecCard key={it.id} it={it} saved={saved} onToggleSave={onToggleSave} inCompare={cmp.includes(it.id)} onCompare={() => toggleCmp(it.id)} />
+              <SpecCard key={it.id} it={it} saved={saved} onToggleSave={onToggleSave} inCompare={cmp.includes(it.id)} onCompare={() => toggleCmp(it.id)} onView3D={onView3D} />
             ))}
           </div>
           {extra.length > 0 && (

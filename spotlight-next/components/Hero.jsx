@@ -5,7 +5,7 @@ import { ITEMS } from "../lib/models";
 const n = ITEMS.length;
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
-export default function Hero({ thumbs }) {
+export default function Hero({ thumbs, onView3D }) {
   const [pos, setPos] = useState(1);
   const [drag, setDrag] = useState(false);
   const [gap, setGap] = useState(210);
@@ -46,6 +46,12 @@ export default function Hero({ thumbs }) {
 
   const select = (e, it, i) => {
     if (st.current.moved > 6) return;
+    // Clicking the already-centered card opens it in the 3D viewer;
+    // clicking any other card just moves the carousel (hero unchanged).
+    if (i === active && onView3D) {
+      onView3D(it);
+      return;
+    }
     setPos(i);
   };
 
