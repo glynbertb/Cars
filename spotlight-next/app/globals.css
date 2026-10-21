@@ -529,12 +529,27 @@ body,h1,.logo,.links a,.count,.info h2,.info p b{color:#fff}
 @media(max-width:767px){
   .vv-logo{display:flex}
   .vv-panel,.vv-sider,.vv-titleblock,.vv-pagenav,.vv-hintwrap{display:none!important}
-  .vv-stagewrap{inset:0;bottom:auto;height:56dvh}
+  .vv-stagewrap{inset:0;bottom:auto;height:52dvh}
+  /* Preset bar is pinned to the bottom of the stage (above the canvas, z4)
+     so the collapsed bottom sheet can never slide under/over it. */
+  .vv-mpresets{top:calc(52dvh - 66px);z-index:4}
   .vv-close{margin-left:0}
   .vv-close .vv-x{display:none}
   .vv-close-label{font-size:12px;letter-spacing:.14em;border:1px solid var(--line2);background:rgba(255,255,255,.1);
     backdrop-filter:blur(10px);border-radius:99px;padding:12px 20px;min-height:44px;display:inline-flex;align-items:center}
   .vv-toast{bottom:auto;top:calc(70px + env(safe-area-inset-top,0px))}
+}
+/* Short phones (landscape / small screens): shrink the stage so the
+   collapsed sheet still clears the preset bar pinned to stage bottom. */
+@media(max-width:767px) and (max-height:600px){
+  .vv-stagewrap{height:46dvh}
+  .vv-mpresets{top:calc(46dvh - 62px)}
+  .vv-mgauges .vv-gauge svg{width:52px;height:52px}
+  .vv-mgauges .vv-gauge-num{height:52px;padding-top:16px}
+  .vv-mgauges .vv-gauge-num b{font-size:13px}
+  .vv-mtitle h2{font-size:24px}
+  .vv-sheet-body{padding:4px 14px 10px}
+  .vv-mactions{margin-top:8px}
 }
 /* Tablet: desktop layout, narrower left panel */
 @media(min-width:768px) and (max-width:1023px){

@@ -232,19 +232,40 @@ export default function VehicleViewer({
     return () => (window.cancelIdleCallback ? cancelIdleCallback(id) : clearTimeout(id));
   }, [index, items, n]);
 
-  // Mobile swipe on the stage area (also drives OrbitControls, which is fine).
-  const swipe = useRef(null);
-  const onTouchStart = (e) => {
-    if (e.touches.length === 1) swipe.current = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() };
-  };
-  const onTouchEnd = (e) => {
-    const s = swipe.current;
-    swipe.current = null;
-    if (!s) return;
-    const dx = e.changedTouches[0].clientX - s.x;
-    const dy = e.changedTouches[0].clientY - s.y;
-    if (Math.abs(dx) > 70 && Math.abs(dy) < 50 && Date.now() - s.t < 500) go(dx < 0 ? 1 : -1);
-  };
+  // Mobile swipe: native listeners on the whole viewer so a fast horizontal
+  // swipe switches machines even when the gesture starts on the canvas
+  // (OrbitControls captures pointer events there, which starves React's
+  // synthetic touch handlers). Vertical sheet drags are unaffected.
+  useEffect(() => {
+    if (!isMobile) return;
+    const root = rootRef.current;
+    if (!root) return;
+    let s = null;
+    const ts = (e) => {
+      if (e.touches.length === 1) {
+        s = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() };
+      } else {
+        s = null; // pinch zoom — never a page swipe
+      }
+    };
+    const te = (e) => {
+      if (!s || e.changedTouches.length === 0) {
+        s = null;
+        return;
+      }
+      const dx = e.changedTouches[0].clientX - s.x;
+      const dy = e.changedTouches[0].clientY - s.y;
+      const dt = Date.now() - s.t;
+      s = null;
+      if (Math.abs(dx) > 60 && Math.abs(dy) < 60 && dt < 600) go(dx < 0 ? 1 : -1);
+    };
+    root.addEventListener("touchstart", ts, { passive: true });
+    root.addEventListener("touchend", te, { passive: true });
+    return () => {
+      root.removeEventListener("touchstart", ts);
+      root.removeEventListener("touchend", te);
+    };
+  }, [isMobile, go]);
 
   const titleBlock = (
     <div className="vv-titleblock">
@@ -366,7 +387,7 @@ export default function VehicleViewer({
 
       {isMobile && (
         <>
-          <div className="vv-stagewrap m" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+          <div className="vv-stagewrap m">
             {vehicle.posterImage && <img className="vv-poster" src={vehicle.posterImage} alt="" aria-hidden="true" />}
             <ViewerStage
               vehicle={vehicle}
